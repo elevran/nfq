@@ -195,7 +195,7 @@ func (s *NetlinkSocket) RecvErr() error {
 func (s *NetlinkSocket) receive() error {
 	for {
 		n, err := s.fillRecvBuffer()
-		fmt.Println("filled ", n, "bytes")
+		fmt.Println("received", n, "bytes")
 		if err != nil {
 			return err
 		}

@@ -8,15 +8,19 @@ import (
 	"unsafe"
 )
 
+//----------------------------------------------------------------------
+// copied from syscall package to allow insertion of debug messages
+//----------------------------------------------------------------------
+
 // ParseNetlinkMessage parses b as an array of netlink messages and
 // returns the slice containing the NetlinkMessage structures.
 func parseNetlinkMessage(b []byte) ([]syscall.NetlinkMessage, error) {
 	var msgs []syscall.NetlinkMessage
 
-	fmt.Println("parsing ", len(b), " bytes from buffer with ", cap(b))
+	fmt.Println("parsing", len(b), "bytes from buffer with", cap(b))
 	for len(b) >= syscall.NLMSG_HDRLEN {
 		h, dbuf, dlen, err := netlinkMessageHeaderAndData(b)
-		fmt.Println("dlen ", dlen)
+		fmt.Println("dlen is", dlen)
 		fmt.Println()
 		if err != nil {
 			return nil, err
