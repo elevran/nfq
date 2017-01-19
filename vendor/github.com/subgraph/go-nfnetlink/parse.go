@@ -18,6 +18,7 @@ func parseNetlinkMessage(b []byte) ([]syscall.NetlinkMessage, error) {
 	var msgs []syscall.NetlinkMessage
 
 	fmt.Println("parsing", len(b), "bytes from buffer with", cap(b))
+	fmt.Println(b)
 	for len(b) >= syscall.NLMSG_HDRLEN {
 		h, dbuf, dlen, err := netlinkMessageHeaderAndData(b)
 		fmt.Println("dlen is", dlen)

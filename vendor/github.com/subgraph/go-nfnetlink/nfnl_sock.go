@@ -199,7 +199,7 @@ func (s *NetlinkSocket) receive() error {
 		if err != nil {
 			return err
 		}
-		msgs, err := parseNetlinkMessage(s.recvBuffer[:n])
+		msgs, err := parseNetlinkMessage(s.recvBuffer[:nlmAlignOf(n)])
 		if err != nil {
 			return err
 		}
@@ -261,6 +261,7 @@ func (s *NetlinkSocket) parseMessageFromBytes(data []byte) *NfNlMessage {
 	if len(data) < syscall.NLMSG_HDRLEN+NFGEN_HDRLEN {
 		return nil
 	}
+	fmt.Println("[", len(data), "]", data)
 	msgs, err := syscall.ParseNetlinkMessage(data)
 	if err != nil {
 		s.warn("Error parsing netlink message inside error message: %v", err)

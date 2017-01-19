@@ -161,6 +161,7 @@ func (q *NFQueue) processPacket(m *nfnetlink.NfNlMessage) error {
 	if payload != nil {
 		p.Packet = gopacket.NewPacket(payload.Data, layers.LayerTypeIPv4,
 			gopacket.DecodeOptions{Lazy: true, NoCopy: true})
+		fmt.Println(len(p.Packet.Data()), p.Packet.Data())
 	}
 	q.packets <- p
 	return nil
