@@ -179,6 +179,7 @@ func (s *NetlinkSocket) runReceiveLoop() {
 		if s.recvChan != nil {
 			close(s.recvChan)
 		}
+		fmt.Println("Error from socket receive:", err, "- closed channel")
 	}
 }
 
@@ -195,11 +196,10 @@ func (s *NetlinkSocket) RecvErr() error {
 func (s *NetlinkSocket) receive() error {
 	for {
 		n, err := s.fillRecvBuffer()
-		fmt.Println("received", n, "bytes")
 		if err != nil {
 			return err
 		}
-		msgs, err := parseNetlinkMessage(s.recvBuffer[:nlmAlignOf(n)])
+		msgs, err := syscall.ParseNetlinkMessage(s.recvBuffer[:n])
 		if err != nil {
 			return err
 		}
@@ -261,7 +261,6 @@ func (s *NetlinkSocket) parseMessageFromBytes(data []byte) *NfNlMessage {
 	if len(data) < syscall.NLMSG_HDRLEN+NFGEN_HDRLEN {
 		return nil
 	}
-	fmt.Println("[", len(data), "]", data)
 	msgs, err := syscall.ParseNetlinkMessage(data)
 	if err != nil {
 		s.warn("Error parsing netlink message inside error message: %v", err)

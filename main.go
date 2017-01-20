@@ -35,9 +35,12 @@ func main() {
 	}
 	defer q.Close()
 
+	count := 0
 	for p := range ps {
+		count++
 		fmt.Printf("Packet: %v\n", p.Packet)
 		p.Accept()
 	}
+	fmt.Println("Exiting after", count, "packets")
 }
 
